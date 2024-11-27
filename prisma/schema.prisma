@@ -12,3 +12,53 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model item {
+  id          String @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  quantity    Int
+
+  categoryid String
+  category   category @relation(fields: [categoryid], references: [id])
+
+  tags itemtag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model category {
+  id          String @id @default(cuid())
+  name        String
+  description String
+
+  items item[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model tag {
+  id          String @id @default(cuid())
+  name        String
+  description String
+
+  items itemtag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model itemtag {
+  itemid    String
+  tagid     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  item item @relation(fields: [itemid], references: [id])
+  tag  tag  @relation(fields: [tagid], references: [id])
+
+  @@id([itemid, tagid])
+}
