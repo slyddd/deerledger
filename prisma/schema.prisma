@@ -20,8 +20,8 @@ model item {
   price       Float
   quantity    Int
 
-  categoryid String
-  category   category @relation(fields: [categoryid], references: [id])
+  categoryid String?
+  category   category? @relation(fields: [categoryid], references: [id])
 
   tags itemtag[]
 
